@@ -1,0 +1,44 @@
+For this Lab 9, we were assigned to recreate Conway's Game of Life on a 40-by-40 game board. This game, invented by mathematician John
+Conway, is demonstrated as an exploration of how complexity is able to arise from situations governed by relatively few paradigms or axioms.
+In this simulation, from the user's perspective, it can proceed in one of two modes; First, is continuous mode; this occurs when a user
+enters a file as input from the command line, and simply plays the game with the given cells from the data file (or interactive mode) by
+following the rules. This will be elaboratedupon later. The other mode is interactive mode, which is played when no data file is chosen. The
+user is prompted to enter a command; by pressing 'q', one can quit the program. By pressing 'a' or 'r', the user is prompted to add or remove
+a cell, respectively. In these cases, the user is asked for two coordinates, and prompted again if they do not fall in the domain of the 
+board, which is 40 characters both ways. By pressing 'n', the user can advance the simulation to the next step, applying the rules and
+updating the board once, where one can still give input. Lastly, pressing 'p' enables continuous play forever, which sends the game into
+continous mode. In this mode, the animated rules occur forever in an infinite condition-controlled loop; this can only be stopped through
+a ctrl-c force quit.
+
+From a programming perspective, the game is much more complicated. After preprocessing functions initially, defining board size as 40, and
+including useful libraries (including ctype.h), the main function goes to initializing variables used; this includes the file pointer for
+the possible input, as well as BoardNow, the current board, and BoardNext, both arrays of ints used in the actual playing of the game.
+The file pointer then opens the input file using argc, and thus begins the conditional loop unto which input is received, either through
+a file or in interactive mode. The loop breaks either when the user hits 'q' or the PlayOn int variable changes value from 0; this value is
+set to 1 by the user hitting 'p' and going to continuous play mode. The input c is then set to the value of the userinput function, which, if
+fPtr is NULL, prompts the user for input, or otherwise, uses fscanf to read the user's input. In the add and remove cases, the main function
+calls the "inputCoord()" function twice in order to get coordinates "p1" and "p2"; the inputCoord function is identical to the userinput()
+ufnction apart from its output as an integer rather than a character, as well as stipulations to ensure that the coordinate is on the board.
+The quit case retrurns 0, and the play on case sets PlayOn to 1. Lastly, if th user hits 'n' to advance to the next step, the main function
+calls the CheckSurroundings function, which I will later describe, and the update function, both of which have both boards as input. Once
+this loop is killed, it goes to the infinite loop of continous play, which carries as PlayOn equals 1. This loop calls CheckSurroundings,
+update, and then animates with usleep and calls system("clear"). The CheckSurroundings function uses a for loop of the entire 40x40 matrix
+of BoardNow and for each cell, checks if it is alive or dead, and the cases in which it carries on; if alive, it survives if surrounded by
+2 or 3 live cells, and otherwise dies. If dead, a cell comes alive if surrounded by exactly 3 cells, and stays dead otherwise. This is
+done by setting the value of BoardNext for a given cell to the outcome given through this function. After this
+function comes update, which simply uses a for loop of the SIZExSIZE matrix to set BoardNow[m][n] to the corresponding cell in BoardNext.
+Then, update calls printboard(BoardNow), which simply gives an 'X' in case that BoardNow does not equal 0, and a space otherwise. Every 40
+characters, modular arithmetic is used to enter a new line.
+
+I was able to check to verify that my output for this lab was correct by creating the scenes and giving as input certain cells that were
+supposed to form a particular way. Initially upon turning the lab in, I realized that my output was not correct when a block of four did
+not stay still, but expanded. This prompted me to email Professor Bualuan, who gave me an extension to fix a few small errors I made that
+led to the program having major output issues. I created a number of my scenes, partiuclarly scene 1, by simply messing around and observing;
+however, for the more complicated oscillators, I had to use The Conway's Game of Life Wiki to give me ideas for certain shapes, notably
+the beacon and the pentadecathlon. For scene 3, I used 3 differently starting gliders as well as one lightweight spaceship (as shown on the
+wikipedia page linked in lab), and scene 4, I simply combined elements of the previous scenes to allow it to come to a final still life.
+Last of all, my scene 5 was used to show that even given an initial explosion of activity in a near-line figure with a few outlying cells
+to influence the growth, the boundaries used in our 40x40 matrix often caused for the killing and curtailing of complex patterns. These
+boundaries, which I enacted in the CheckSurroundings function to close off the "wormhole" tendencies of checking for surrounding cells,
+were particularly profound to me given the fact that he calls this the "Game Of Life"; if Conway was intending to be at all metaphorical,
+this tendency could be shown to represent the significance of overpopulation, crowding, or the limited resources these have.
