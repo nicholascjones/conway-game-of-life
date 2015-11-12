@@ -47,7 +47,7 @@ int main(int argc, char *argv[2])
 					  break;
 				case 'p': PlayOn = 1; //plays continuously and exits loop
 					  break; //plays permanently
-				default: printf("Sorry, that input is not valid\n"); 
+				//default: printf("Sorry, that input is not valid\n"); 
 					break;
 			} //ends switch
 		} //ends initiation while loop
